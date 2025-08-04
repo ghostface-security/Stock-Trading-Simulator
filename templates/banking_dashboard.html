@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Banking Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <h2>Welcome, {{ user.username }}</h2>
+        <a href="{{ url_for('banking_dashboard') }}">Banking Dashboard</a>
+        <a href="{{ url_for('stock_dashboard') }}">Stock Market</a>
+        <a href="{{ url_for('logout') }}">Log Out</a>
+    </aside>
+
+    <main class="main-content">
+        <div class="dashboard-card">
+            <h2>Account Summary</h2>
+            <div class="info-block">
+                <p>Available Funds:</p>
+                <span>${{ "{:,.2f}".format(user_wallet.balance) }}</span>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Account Actions</h2>
+            <div class="form-section">
+                <h3>Deposit Funds</h3>
+                <form action="{{ url_for('deposit') }}" method="post">
+                    <input type="number" name="amount" placeholder="Amount" step="0.01" min="0" required>
+                    <button type="submit" class="button-primary">Deposit</button>
+                </form>
+            </div>
+            <div class="form-section">
+                <h3>Withdraw Funds</h3>
+                <form action="{{ url_for('withdraw') }}" method="post">
+                    <input type="number" name="amount" placeholder="Amount" step="0.01" min="0" required>
+                    <button type="submit" class="button-primary">Withdraw</button>
+                </form>
+            </div>
+            <div class="form-section">
+                <h3>Transfer Funds</h3>
+                <form action="{{ url_for('transfer') }}" method="post">
+                    <input type="text" name="recipient" placeholder="Recipient Username" required>
+                    <input type="number" name="amount" placeholder="Amount" step="0.01" min="0" required>
+                    <button type="submit" class="button-primary">Transfer</button>
+                </form>
+            </div>
+            <div class="form-section">
+                <h3>Delete Account</h3>
+                <p>This action is irreversible. All data will be permanently deleted.</p>
+                <a href="{{ url_for('confirm_delete') }}" class="button-danger">Delete My Account</a>
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>Recent Activity</h2>
+            <ul class="activity-list">
+                {% for transaction in transactions %}
+                {% set is_positive_transaction = 'Deposit' in transaction.transaction_type or 'Transfer In' in transaction.transaction_type or 'Sell' in transaction.transaction_type or 'fee collected' in transaction.transaction_type.lower() or 'Trust Account' in transaction.transaction_type %}
+                <li>
+                    <p>{{ transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} - {{ transaction.transaction_type }}</p>
+                    <span style="color: {% if is_positive_transaction %}green{% else %}red{% endif %};">
+                        {% if is_positive_transaction %}+{% else %}-{% endif %} ${{ "{:,.2f}".format(transaction.amount|abs) }}
+                    </span>
+                </li>
+                {% else %}
+                <p style="text-align: center; color: #6c757d;">No recent activity to display.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+</div>
+{% endblock %}

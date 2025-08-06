@@ -26,7 +26,7 @@ source venv/bin/activate || { echo "Error: Could not activate virtual environmen
 # We start ngrok first so that the 'exec' command for Flask can take over
 # as the main process for systemd, while ngrok continues to run.
 echo "Starting ngrok to forward traffic..."
-"$NGROK_EXEC" http --domain=merry-well-ladybird.ngrok-free.app --host-header=rewrite 5000 > /home/pi/Stock-Trading-Simulator/ngrok_log.txt 2>&1 &
+"$NGROK_EXEC" http --domain=your-ngrok-domain.ngrok-free.app --host-header=rewrite 5000 > /home/pi/Stock-Trading-Simulator/ngrok_log.txt 2>&1 &
 
 # Store the PID of the ngrok process so we can wait for it if needed,
 # though systemd will primarily manage the Flask app.

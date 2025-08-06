@@ -79,8 +79,7 @@ To get the project up and running on your local machine for development:
 
     Clone the repository:
 
-    git clone https://github.com/ghostface-security/Stock-Trading-Simulator.git
-    cd Stock-Trading-Simulator
+    git clone https://github.com/ghostface-security/Stock-Trading-Simulator.git && cd Stock-Trading-Simulator
 
     Set up a virtual environment:
     It's a best practice to use a virtual environment to manage dependencies.

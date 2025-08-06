@@ -31,6 +31,20 @@ Features
 
     Modern User Interface: The application is designed to be modern, clean, and fully responsive, ensuring a seamless experience across all screen sizes.
 
+Security Enhancements
+
+This project has undergone significant security hardening to make it more robust, especially for deployment as a public web server. Key enhancements include:
+
+    Secure Password Hashing: Upgraded from SHA-256 to Flask-Bcrypt, an industry-standard, adaptive hashing algorithm that incorporates unique salts for each password, greatly increasing resistance to brute-force and rainbow table attacks.
+
+    CSRF (Cross-Site Request Forgery) Protection: Implemented Flask-WTF with CSRFProtect to prevent malicious requests originating from other websites.
+
+    Secure Password Reset Links: Modified the password reset functionality to ensure sensitive tokens are no longer displayed in the user's browser, instead logging them securely on the server side.
+
+    Secure Database File Location: The SQLite database file (database.db) has been moved to a non-web-accessible directory (/instance/database.db), preventing direct public access to sensitive user data.
+
+    Network Firewall (UFW) Configuration: Instructions and configuration for setting up a firewall on the Raspberry Pi to limit incoming connections to only essential services (SSH and the web application port), significantly reducing the network attack surface.
+
 Technologies Used
 
     Backend:
@@ -43,7 +57,9 @@ Technologies Used
 
         APScheduler: A task-scheduling library that powers the periodic, automatic updates of stock prices.
 
-        Hashlib: Used for secure and irreversible password hashing.
+        Flask-Bcrypt: Used for robust and irreversible password hashing.
+
+        Flask-WTF: Provides CSRF protection for web forms.
 
     Frontend:
 
@@ -57,9 +73,9 @@ Technologies Used
 
         SQLite: A lightweight, file-based database used to store all user data, transaction records, and stock information.
 
-Installation
+Installation & Local Development
 
-To get the project up and running on your local machine, follow these steps:
+To get the project up and running on your local machine for development:
 
     Clone the repository:
 
@@ -86,6 +102,12 @@ To get the project up and running on your local machine, follow these steps:
     python3 app.py
 
     The application will now be running on http://127.0.0.1:5000.
+
+Deployment to Raspberry Pi (Public Web Server)
+
+For detailed instructions on deploying this application to a Raspberry Pi as a public web server, including systemd service setup, firewall configuration, and ngrok tunneling, please refer to the dedicated deployment guide:
+
+    DEPLOYMENT.md
 
 Usage
 

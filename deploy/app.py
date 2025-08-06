@@ -35,7 +35,7 @@ app = Flask(__name__)
 
 
 # A secret key is required for sessions and flash messages
-app.secret_key = 'c8f1e2d3b4a5f6e7d8c9b0a1f2e3d4c5b6a7f8e9d0c1b2a3f4e5d6c7b8a9f0e1' # NEW Chosen random secret key
+app.secret_key = 'your_sercet_key'
 
 # --- PATCH 4 & FIX: Secure Database File Location with Absolute Path ---
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/pi/Stock-Trading-Simulator/instance/database.db'

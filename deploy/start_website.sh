@@ -22,10 +22,6 @@ NGROK_EXEC="/usr/local/bin/ngrok"
 echo "Activating virtual environment..."
 source venv/bin/activate || { echo "Error: Could not activate virtual environment. Make sure it exists."; exit 1; }
 
-# IMPORTANT: Removed 'pip install -r requirements.txt' from here.
-# This command should be run manually once during setup or deployment,
-# not every time the service starts, as it can cause delays or issues.
-
 # Start ngrok to forward traffic to port 5000 in the background.
 # We start ngrok first so that the 'exec' command for Flask can take over
 # as the main process for systemd, while ngrok continues to run.

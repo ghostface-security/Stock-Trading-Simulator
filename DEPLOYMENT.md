@@ -47,7 +47,7 @@ sudo ufw status verbose   # Verify rules
  * Clone the Repository:
    Navigate to your home directory and clone your project:
    cd ~
-git clone https://github.com/your-username/Stock-Trading-Simulator.git # Replace with your repo URL
+git clone https://github.com/ghostface-security/Stock-Trading-Simulator.git
 cd Stock-Trading-Simulator
 
  * Create and Activate Virtual Environment:

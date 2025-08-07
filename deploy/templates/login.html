@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="auth-card">
+        <h1>Account Login</h1>
+        <form action="{{ url_for('login') }}" method="post">
+            {# Previously, {{ csrf_token() | safe }} was here. #}
+            {# Now, we explicitly create the hidden input field, using the token as its value. #}
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() | safe }}">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" class="button-primary">Log In</button>
+        </form>
+        <div class="link-container">
+            <a href="{{ url_for('register') }}">Need an account? Register here.</a>
+            <a href="{{ url_for('forgot_password') }}">Forgot password?</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

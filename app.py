@@ -171,13 +171,13 @@ def get_global_exchange_user():
     with app.app_context():
         if global_exchange_user_id:
             return User.query.get(global_exchange_user_id)
-    
+
         global_exchange_user = User.query.filter_by(username='Global_Exchange').first()
         if not global_exchange_user:
             global_exchange_user = User(username='Global_Exchange', password_hash='NO_LOGIN')
             db.session.add(global_exchange_user)
             db.session.commit()
-            
+
             # Create a wallet for the exchange user
             exchange_wallet = UserWallet(user_id=global_exchange_user.id, balance=0.0)
             db.session.add(exchange_wallet)
@@ -205,12 +205,12 @@ def register():
             new_user.set_password(password)
             db.session.add(new_user)
             db.session.commit()
-            
+
             # Create the wallet for the new user with initial balance
             new_wallet = UserWallet(user_id=new_user.id, balance=INITIAL_BALANCE)
             db.session.add(new_wallet)
             db.session.commit()
-            
+
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
     return render_template('register.html')
@@ -236,45 +236,69 @@ def forgot_password():
         if user:
             token = secrets.token_urlsafe(32)
             expires_at = datetime.utcnow() + timedelta(hours=1)
-            
+
             PasswordResetToken.query.filter_by(user_id=user.id).delete()
-            
+
             new_token = PasswordResetToken(user_id=user.id, token=token, expires_at=expires_at)
             db.session.add(new_token)
             db.session.commit()
-            
+
             reset_link = url_for('reset_password', token=token, _external=True)
             flash(f'A password reset link has been generated. link: {reset_link}', 'info')
         else:
             flash('No account found with that username.', 'error')
-            
+
         return redirect(url_for('forgot_password'))
     return render_template('forgot_password.html')
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     reset_token = PasswordResetToken.query.filter_by(token=token).first()
-    
+
     if not reset_token or reset_token.expires_at < datetime.utcnow():
         flash('The password reset link is invalid or has expired.', 'error')
         return redirect(url_for('login'))
-    
+
     user = User.query.get(reset_token.user_id)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
-        
+
     if request.method == 'POST':
         new_password = request.form['new_password']
         user.set_password(new_password)
-        
+
         db.session.delete(reset_token)
         db.session.commit()
-        
+
         flash('Your password has been reset successfully. Please log in.', 'success')
         return redirect(url_for('login'))
-        
+
     return render_template('reset_password.html', token=token)
+
+# --- New Change Password Route ---
+@app.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    old_password = request.form.get('old_password')
+    new_password = request.form.get('new_password')
+    confirm_new_password = request.form.get('confirm_new_password')
+
+    user = g.user
+
+    if not user.check_password(old_password):
+        flash('Incorrect old password.', 'error')
+        return redirect(url_for('banking_dashboard'))
+
+    if new_password != confirm_new_password:
+        flash('New passwords do not match.', 'error')
+        return redirect(url_for('banking_dashboard'))
+
+    user.set_password(new_password)
+    db.session.commit()
+
+    flash('Your password has been changed successfully.', 'success')
+    return redirect(url_for('banking_dashboard'))
 
 @app.route('/logout')
 @login_required
@@ -304,12 +328,12 @@ def deposit():
     else:
         # Update user's wallet
         g.user_wallet.balance += amount
-        
+
         # Update the Global_Exchange's wallet (the central fund)
         exchange_user = get_global_exchange_user()
         exchange_wallet = UserWallet.query.filter_by(user_id=exchange_user.id).first()
         exchange_wallet.balance += amount
-        
+
         # Record a transaction for the user
         new_transaction = Transaction(
             user_id=g.user.id,
@@ -337,36 +361,37 @@ def withdraw():
 
     fee = round(amount * WITHDRAWAL_FEE_RATE, 2)
     total_debit = amount + fee
-    
+
     if g.user_wallet.balance < total_debit:
         flash(f'Insufficient funds to cover withdrawal and fee (${fee:.2f}).', 'error')
-    else:
-        # Update user's wallet
-        g.user_wallet.balance -= total_debit
-        
-        # Update the Global_Exchange's wallet (central fund)
-        exchange_user = get_global_exchange_user()
-        exchange_wallet = UserWallet.query.filter_by(user_id=exchange_user.id).first()
-        exchange_wallet.balance -= amount # Only the withdrawal amount leaves the central fund
-        
-        # Record user transaction for withdrawal
-        user_transaction = Transaction(
-            user_id=g.user.id,
-            transaction_type='Withdrawal',
-            amount=-amount
-        )
-        db.session.add(user_transaction)
-        
-        # Record transaction for the fee collected
-        fee_transaction = Transaction(
-            user_id=exchange_user.id,
-            transaction_type='Fee Collected',
-            amount=fee
-        )
-        db.session.add(fee_transaction)
-        
-        db.session.commit()
-        flash(f'Successfully withdrew ${amount:.2f} (Fee: ${fee:.2f}).', 'success')
+        return redirect(url_for('banking_dashboard'))
+
+    # Update user's wallet
+    g.user_wallet.balance -= total_debit
+
+    # Update the Global_Exchange's wallet (central fund)
+    exchange_user = get_global_exchange_user()
+    exchange_wallet = UserWallet.query.filter_by(user_id=exchange_user.id).first()
+    exchange_wallet.balance -= amount # Only the withdrawal amount leaves the central fund
+
+    # Record user transaction for withdrawal
+    user_transaction = Transaction(
+        user_id=g.user.id,
+        transaction_type='Withdrawal',
+        amount=-amount
+    )
+    db.session.add(user_transaction)
+
+    # Record transaction for the fee collected
+    fee_transaction = Transaction(
+        user_id=exchange_user.id,
+        transaction_type='Fee Collected',
+        amount=fee
+    )
+    db.session.add(fee_transaction)
+
+    db.session.commit()
+    flash(f'Successfully withdrew ${amount:.2f} (Fee: ${fee:.2f}).', 'success')
 
     return redirect(url_for('banking_dashboard'))
 
@@ -381,7 +406,7 @@ def transfer():
         return redirect(url_for('banking_dashboard'))
 
     recipient = User.query.filter_by(username=recipient_username).first()
-    
+
     if not recipient:
         flash('Recipient not found.', 'error')
     elif amount <= 0 or g.user_wallet.balance < amount:
@@ -391,11 +416,11 @@ def transfer():
         if not recipient_wallet:
             flash('Recipient wallet not found. Please contact support.', 'error')
             return redirect(url_for('banking_dashboard'))
-        
+
         # The Global_Exchange balance is not affected since this is an internal transfer
         g.user_wallet.balance -= amount
         recipient_wallet.balance += amount
-        
+
         # Record transactions for both parties
         sender_transaction = Transaction(
             user_id=g.user.id,
@@ -409,7 +434,7 @@ def transfer():
         )
         db.session.add(sender_transaction)
         db.session.add(recipient_transaction)
-        
+
         db.session.commit()
         flash(f'Successfully transferred ${amount:.2f} to {recipient_username}.', 'success')
 
@@ -452,7 +477,7 @@ def buy_stock():
         exchange_wallet = UserWallet.query.filter_by(user_id=exchange_user.id).first()
         exchange_wallet.balance += fee # Fee stays in the central fund
         exchange_wallet.balance -= total_cost # Cost of stock leaves the central fund
-        
+
         holding = StockHolding.query.filter_by(user_id=g.user.id, symbol=symbol).first()
         if holding:
             new_quantity = holding.quantity + quantity
@@ -462,18 +487,18 @@ def buy_stock():
         else:
             new_holding = StockHolding(user_id=g.user.id, symbol=symbol, quantity=quantity, cost_basis=current_price)
             db.session.add(new_holding)
-        
+
         # Record user transaction
         new_transaction = Transaction(user_id=g.user.id, transaction_type=f'Buy {quantity} shares of {symbol}', amount=-total_cost)
         db.session.add(new_transaction)
-        
+
         # Record fee transaction
         fee_transaction = Transaction(user_id=exchange_user.id, transaction_type=f'Fee collected from {g.user.username} for Buy {symbol}', amount=fee)
         db.session.add(fee_transaction)
-        
+
         db.session.commit()
         flash(f'Successfully bought {quantity} shares of {symbol} for ${total_cost:.2f} (Fee: ${fee:.2f}).', 'success')
-    
+
     return redirect(url_for('stock_dashboard'))
 
 @app.route('/sell_stock', methods=['POST'])
@@ -490,7 +515,7 @@ def sell_stock():
     if not current_price or quantity <= 0:
         flash('Invalid stock or quantity.', 'error')
         return redirect(url_for('stock_dashboard'))
-    
+
     holding = StockHolding.query.filter_by(user_id=g.user.id, symbol=symbol).first()
     if not holding or holding.quantity < quantity:
         flash('Not enough shares to sell.', 'error')
@@ -498,15 +523,15 @@ def sell_stock():
 
     total_sale = current_price * quantity
     cost_of_sold_shares = holding.cost_basis * quantity
-    
+
     # Calculate profit or loss
     profit_loss = total_sale - cost_of_sold_shares
-    
+
     fee = 0
     if profit_loss > 0:
         # Only apply a fee if the sale results in a profit
         fee = round(total_sale * STOCK_SELL_FEE_RATE, 2)
-    
+
     net_profit = total_sale - fee
 
     # Update user wallet
@@ -523,23 +548,23 @@ def sell_stock():
     holding.quantity -= quantity
     if holding.quantity == 0:
         db.session.delete(holding)
-    
+
     # Record user transaction
     new_transaction = Transaction(user_id=g.user.id, transaction_type=f'Sell {quantity} shares of {symbol}', amount=net_profit)
     db.session.add(new_transaction)
-    
+
     # Record fee transaction if a fee was applied
     if fee > 0:
         fee_transaction = Transaction(user_id=exchange_user.id, transaction_type=f'Fee collected from {g.user.username} for Sell {symbol}', amount=fee)
         db.session.add(fee_transaction)
 
     db.session.commit()
-    
+
     if fee > 0:
         flash(f'Successfully sold {quantity} shares of {symbol} for a profit of ${profit_loss:.2f} (Fee: ${fee:.2f}, Net: ${net_profit:.2f}).', 'success')
     else:
         flash(f'Successfully sold {quantity} shares of {symbol} for a loss of ${abs(profit_loss):.2f}. No fee was charged.', 'success')
-    
+
     return redirect(url_for('stock_dashboard'))
 
 @app.route('/get_stock_prices')
@@ -556,18 +581,18 @@ def confirm_delete():
 def delete_account():
     user = g.user
     user_id = user.id
-    
+
     # Delete all associated records
     StockHolding.query.filter_by(user_id=user_id).delete()
     Transaction.query.filter_by(user_id=user_id).delete()
     PasswordResetToken.query.filter_by(user_id=user_id).delete()
     UserWallet.query.filter_by(user_id=user_id).delete() # Delete the wallet as well
-    
+
     db.session.delete(user)
     db.session.commit()
-    
+
     session.pop('user_id', None)
-    
+
     flash('Your account has been successfully deleted.', 'success')
     return redirect(url_for('login'))
 
@@ -577,15 +602,15 @@ if __name__ == '__main__':
         print("Creating database tables...")
         db.create_all()
         print("Database tables created.")
-        
+
         print("Initializing stock prices...")
         initialize_stock_prices()
         print("Stock prices initialized.")
-        
+
         print("Ensuring Global Exchange account exists...")
         get_global_exchange_user()
         print("Global Exchange account ready.")
-        
+
     scheduler = BackgroundScheduler()
     scheduler.add_job(func=fetch_and_update_stock_prices, trigger='interval', seconds=60)
     scheduler.start()

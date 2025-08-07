@@ -1,0 +1,50 @@
+Aug 07 00:01:15 raspberrypi start_website.sh[5948]:     @login
+Aug 07 00:01:15 raspberrypi start_website.sh[5948]: SyntaxError: invalid syntax
+Aug 07 00:01:15 raspberrypi systemd[1]: stock-trading-sim.service: Main process exited, code=exited, status=1/FAILURE
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Failed with result 'exit-code'.
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Scheduled restart job, restart counter is at 2.
+Aug 07 00:01:16 raspberrypi systemd[1]: Stopped stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:16 raspberrypi systemd[1]: Started stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]: Navigating to the project directory: /home/pi/Stock-Trading-Simulator
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]: Activating virtual environment...
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]: Starting ngrok to forward traffic...
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]: Starting the Flask application (this will become the main process for systemd)...
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]:   File "/home/pi/Stock-Trading-Simulator/app.py", line 471
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]:     @login
+Aug 07 00:01:16 raspberrypi start_website.sh[5955]: SyntaxError: invalid syntax
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Main process exited, code=exited, status=1/FAILURE
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Failed with result 'exit-code'.
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Scheduled restart job, restart counter is at 3.
+Aug 07 00:01:16 raspberrypi systemd[1]: Stopped stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:16 raspberrypi systemd[1]: Started stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]: Navigating to the project directory: /home/pi/Stock-Trading-Simulator
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]: Activating virtual environment...
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]: Starting ngrok to forward traffic...
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]: Starting the Flask application (this will become the main process for systemd)...
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]:   File "/home/pi/Stock-Trading-Simulator/app.py", line 471
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]:     @login
+Aug 07 00:01:16 raspberrypi start_website.sh[5963]: SyntaxError: invalid syntax
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Main process exited, code=exited, status=1/FAILURE
+Aug 07 00:01:16 raspberrypi systemd[1]: stock-trading-sim.service: Failed with result 'exit-code'.
+Aug 07 00:01:17 raspberrypi systemd[1]: stock-trading-sim.service: Scheduled restart job, restart counter is at 4.
+Aug 07 00:01:17 raspberrypi systemd[1]: Stopped stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:17 raspberrypi systemd[1]: Started stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]: Navigating to the project directory: /home/pi/Stock-Trading-Simulator
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]: Activating virtual environment...
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]: Starting ngrok to forward traffic...
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]: Starting the Flask application (this will become the main process for systemd)...
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]:   File "/home/pi/Stock-Trading-Simulator/app.py", line 471
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]:     @login
+Aug 07 00:01:17 raspberrypi start_website.sh[5970]: SyntaxError: invalid syntax
+Aug 07 00:01:17 raspberrypi systemd[1]: stock-trading-sim.service: Main process exited, code=exited, status=1/FAILURE
+Aug 07 00:01:17 raspberrypi systemd[1]: stock-trading-sim.service: Failed with result 'exit-code'.
+Aug 07 00:01:17 raspberrypi systemd[1]: stock-trading-sim.service: Scheduled restart job, restart counter is at 5.
+Aug 07 00:01:17 raspberrypi systemd[1]: Stopped stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:01:17 raspberrypi systemd[1]: stock-trading-sim.service: Start request repeated too quickly.
+Aug 07 00:01:17 raspberrypi systemd[1]: stock-trading-sim.service: Failed with result 'exit-code'.
+Aug 07 00:01:17 raspberrypi systemd[1]: Failed to start stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:03:11 raspberrypi systemd[1]: Started stock-trading-sim.service - Stock Trading Simulator Application.
+Aug 07 00:03:11 raspberrypi start_website.sh[6021]: Navigating to the project directory: /home/pi/Stock-Trading-Simulator
+Aug 07 00:03:11 raspberrypi start_website.sh[6021]: Activating virtual environment...
+Aug 07 00:03:11 raspberrypi start_website.sh[6021]: Starting ngrok to forward traffic...
+Aug 07 00:03:11 raspberrypi start_website.sh[6021]: Starting the Flask application (this will become the main process for systemd)...

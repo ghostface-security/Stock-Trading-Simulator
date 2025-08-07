@@ -3,6 +3,13 @@
 {% block title %}Banking Dashboard{% endblock %}
 
 {% block content %}
+<style>
+    .form-section form input,
+    .form-section form button {
+        margin-top: 5px; /* Adds 5px of space above each element */
+    }
+</style>
+
 <div class="dashboard-container">
     <aside class="sidebar">
         <h2>Welcome, {{ user.username }}</h2>
@@ -42,6 +49,15 @@
                     <input type="text" name="recipient" placeholder="Recipient Username" required>
                     <input type="number" name="amount" placeholder="Amount" step="0.01" min="0" required>
                     <button type="submit" class="button-primary">Transfer</button>
+                </form>
+            </div>
+            <div class="form-section">
+                <h3>Change Password</h3>
+                <form action="{{ url_for('change_password') }}" method="post">
+                    <input type="password" name="old_password" placeholder="Old Password" required>
+                    <input type="password" name="new_password" placeholder="New Password" required>
+                    <input type="password" name="confirm_new_password" placeholder="Confirm New Password" required>
+                    <button type="submit" class="button-primary">Change Password</button>
                 </form>
             </div>
             <div class="form-section">

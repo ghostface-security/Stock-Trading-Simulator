@@ -155,6 +155,7 @@ footer {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    /* UPDATED: Center text within the auth card */
     text-align: center;
 }
 
@@ -198,6 +199,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     padding: 1.5rem;
     border: 1px solid var(--border-color);
     border-radius: 12px;
+    /* UPDATED: Center text within the form section */
+    text-align: center;
 }
 
 .form-section h3 {
@@ -286,11 +289,13 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     border-bottom: none;
 }
 
-/* CORRECTED CSS FOR STOCK MARKET DASHBOARD FORMS */
+/* UPDATED CSS FOR STOCK MARKET DASHBOARD FORMS */
 .data-table td form {
     display: flex;
     align-items: center;
     gap: 8px;
+    /* NEW: Align buttons to the right side of the table cell */
+    justify-content: flex-end;
 }
 
 
@@ -306,11 +311,20 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     font-weight: 600;
     transition: background-color 0.3s, transform 0.1s;
     text-decoration: none;
-    display: block; /* NEW: Display block to allow margins to work */
+    /* NEW: Display block to allow margins to work, overriding inline-block */
+    display: block; 
     text-align: center;
-    /* NEW: Auto margins and max-width to center the buttons */
+    /* NEW: Auto margins and max-width to center the buttons on auth page */
     max-width: 300px;
     margin: 0 auto;
+}
+
+/* Override for buttons in the data table to remove the auto margins and max-width */
+.data-table .button-primary,
+.data-table .button-secondary,
+.data-table .button-danger {
+    margin: 0;
+    max-width: none;
 }
 
 .button-primary:hover {

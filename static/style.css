@@ -312,14 +312,14 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     transition: background-color 0.3s, transform 0.1s;
     text-decoration: none;
     /* NEW: Display block to allow margins to work, overriding inline-block */
-    display: block; 
+    display: block;
     text-align: center;
     /* NEW: Auto margins and max-width to center the buttons on auth page */
     max-width: 300px;
     margin: 0 auto;
 }
 
-/* Override for buttons in the data table to remove the auto margins and max-width */
+/* UPDATED: Override for buttons in the data table to remove the auto margins and max-width */
 .data-table .button-primary,
 .data-table .button-secondary,
 .data-table .button-danger {

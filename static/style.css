@@ -200,7 +200,10 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     margin-bottom: 1rem;
 }
 
+/* CORRECTED CSS FOR BANKING DASHBOARD FORMS */
 .form-section form {
+    display: flex;
+    flex-direction: column;
     gap: 0.75rem;
 }
 
@@ -275,6 +278,14 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
 .data-table tbody tr:last-child td {
     border-bottom: none;
 }
+
+/* CORRECTED CSS FOR STOCK MARKET DASHBOARD FORMS */
+.data-table td form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 
 /* --- Utility Classes --- */
 .button-primary, .button-secondary, .button-danger {

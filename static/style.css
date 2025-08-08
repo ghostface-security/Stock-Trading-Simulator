@@ -169,9 +169,14 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    /* NEW: Align items to center */
+    align-items: center;
 }
 
+/* UPDATED INPUT STYLES TO CENTER THEM */
 input[type="text"], input[type="password"], input[type="number"] {
+    /* Changed to max-width to allow for smaller containers */
+    max-width: 300px;
     width: 100%;
     padding: 0.75rem;
     border: 1px solid var(--border-color);
@@ -179,6 +184,8 @@ input[type="text"], input[type="password"], input[type="number"] {
     font-size: 1rem;
     color: var(--text-color);
     transition: border-color 0.2s;
+    /* NEW: Auto margins to center the block element */
+    margin: 0 auto;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus {
@@ -299,8 +306,11 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:foc
     font-weight: 600;
     transition: background-color 0.3s, transform 0.1s;
     text-decoration: none;
-    display: inline-block;
+    display: block; /* NEW: Display block to allow margins to work */
     text-align: center;
+    /* NEW: Auto margins and max-width to center the buttons */
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .button-primary:hover {

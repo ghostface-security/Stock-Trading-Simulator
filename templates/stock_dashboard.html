@@ -38,7 +38,7 @@
                         <td>{{ stock_names[symbol] }}</td>
                         <td id="stock-price-{{ symbol }}">${{ "{:,.2f}".format(market_prices[symbol]) }}</td>
                         <td>
-                            <form action="{{ url_for('buy_stock') }}" method="post" style="display:inline;">
+                            <form action="{{ url_for('buy_stock') }}" method="post">
                                 <input type="hidden" name="symbol" value="{{ symbol }}">
                                 <input type="number" name="quantity" placeholder="Qty" min="1" required style="width: 60px;">
                                 <button type="submit" class="button-primary">Buy</button>
@@ -73,7 +73,7 @@
                         <td id="portfolio-value-{{ item.symbol }}"></td>
                         <td id="portfolio-pl-{{ item.symbol }}"></td>
                         <td>
-                            <form action="{{ url_for('sell_stock') }}" method="post" style="display:inline;">
+                            <form action="{{ url_for('sell_stock') }}" method="post">
                                 <input type="hidden" name="symbol" value="{{ item.symbol }}">
                                 <input type="number" name="quantity" placeholder="Qty" min="1" max="{{ item.quantity }}" required style="width: 60px;">
                                 <button type="submit" class="button-primary">Sell</button>
@@ -125,11 +125,11 @@
                         const costBasisElement = item.querySelector('td:nth-child(3)');
                         const costBasisText = costBasisElement.textContent;
                         const costBasis = parseFloat(costBasisText.replace(/[^0-9.-]+/g, ''));
-                        
+
                         const currentValue = quantity * stockPrice;
                         const profitLoss = currentValue - (quantity * costBasis);
                         const profitLossPercentage = (profitLoss / (quantity * costBasis)) * 100;
-                        
+
                         const valueElement = document.getElementById(`portfolio-value-${symbol}`);
                         const plElement = document.getElementById(`portfolio-pl-${symbol}`);
 
@@ -152,7 +152,7 @@
             try {
                 const response = await fetch('{{ url_for("get_stock_prices") }}');
                 const prices = await response.json();
-                
+
                 const marketplaceRows = document.querySelectorAll('#marketplace-table-body tr');
                 marketplaceRows.forEach(row => {
                     const symbol = row.getAttribute('data-stock-symbol');
@@ -172,7 +172,7 @@
                         const currentValue = quantity * stockPrice;
                         const profitLoss = currentValue - (quantity * costBasis);
                         const profitLossPercentage = (profitLoss / (quantity * costBasis)) * 100;
-                        
+
                         document.getElementById(`portfolio-value-${symbol}`).textContent = formatCurrency(currentValue);
                         const plElement = document.getElementById(`portfolio-pl-${symbol}`);
                         plElement.textContent = `${profitLossPercentage.toFixed(2)}%`;

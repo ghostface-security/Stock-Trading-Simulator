@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the base directory for the project.
-PROJECT_DIR="/home/pi/website"
+PROJECT_DIR="/home/pi/deploy"
 
 # Navigate to the correct directory
 echo "Navigating to the project directory: $PROJECT_DIR"

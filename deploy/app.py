@@ -37,7 +37,7 @@ app = Flask(__name__)
 app.secret_key = 'your_sercet_key'
 
 # --- PATCH 4 & FIX: Secure Database File Location with Absolute Path ---
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/pi/website/instance/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////your/project/directory/instance/database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 

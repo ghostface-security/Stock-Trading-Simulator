@@ -37,7 +37,7 @@ NGROK_PID=$!
 # a more robust way to manage long-running services.
 echo "Starting the Flask application..."
 exec "$PYTHON_EXEC" app.py
-echo "Flask application started successfully."
+
 # Note: Any commands after 'exec' will NOT be executed by this script,
 # as 'exec' replaces the current shell process. The ngrok process,
 # having been backgrounded, will continue to run independently.

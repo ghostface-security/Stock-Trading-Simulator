@@ -86,10 +86,10 @@ exec python3 app.py
    sudo nano /etc/systemd/system/stock-trading-sim.service
 
    Paste the following content:
-   [Unit]
+
+[Unit]
 Description=Stock Trading Simulator Flask Application
 After=network.target
-
 [Service]
 User=pi
 Group=pi

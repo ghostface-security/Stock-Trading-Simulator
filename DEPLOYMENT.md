@@ -90,6 +90,7 @@ exec python3 app.py
 [Unit]
 Description=Stock Trading Simulator Flask Application
 After=network.target
+
 [Service]
 User=pi
 Group=pi
